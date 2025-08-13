@@ -2,7 +2,7 @@ from simulation.utils.positions import Position2D, Velocity2D
 
 class Particle:
     """Contains information about a particle in a simulation."""
-    def __init__(self, mass, charge, position:Position2D, velocity:Velocity2D):
+    def __init__(self, mass, position:Position2D, velocity:Velocity2D):
         """
         Initialize a particle with its properties.
 
