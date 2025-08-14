@@ -1,4 +1,5 @@
 from simulation.physics.particle import *
+from simulation.rendering.rendering2D import *
 
 def init_environment():
     """
@@ -15,3 +16,9 @@ def init_environment():
     ]
     
     return particles
+
+particles = init_environment()
+
+@main_game_loop()
+def main():
+    render_particles(particles)
