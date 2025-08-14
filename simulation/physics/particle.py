@@ -1,8 +1,9 @@
 from simulation.utils.positions import Position2D, Velocity2D
+from simulation.utils.constants import PARTICLE_RADIUS
 
 class Particle:
     """Contains information about a particle in a simulation."""
-    def __init__(self, mass, position:Position2D, velocity:Velocity2D, radius:int = 5):
+    def __init__(self, mass, position:Position2D, velocity:Velocity2D, radius:int = PARTICLE_RADIUS):
         """
         Initialize a particle with its properties.
 

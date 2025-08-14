@@ -1,10 +1,11 @@
 import pygame
 
 from simulation.physics.particle import Particle
+from simulation.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, DEFAULT_BACKGROUND_COLOR, DEFAULT_PARTICLE_COLOR
 
 pygame.init()
 
-screen = pygame.display.set_mode((1500, 1000))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 running = True
 
 def render_particles(particles:list[Particle]) -> None:
@@ -13,9 +14,9 @@ def render_particles(particles:list[Particle]) -> None:
 
     :param particles: List of particles to render.
     """
-    screen.fill((0, 0, 0))  # Clear the screen with black
+    screen.fill(DEFAULT_BACKGROUND_COLOR)  # Clear the screen with black
     for particle in particles:
-        pygame.draw.circle(screen, (255, 255, 255), (int(particle.position.x), int(particle.position.y)), particle.radius)
+        pygame.draw.circle(screen, DEFAULT_PARTICLE_COLOR, (int(particle.position.x), int(particle.position.y)), particle.radius)
 
 def main_game_loop():
     def decorator(func):

@@ -1,5 +1,6 @@
 from simulation.physics.particle import Particle
 from simulation.utils.positions import Position2D, Velocity2D
+from simulation.utils.constants import G
 
 def distance_euclidienne(p1:Particle, p2:Particle) -> float:
     """
@@ -21,7 +22,6 @@ def force_gravitationnelle(p1:Particle, p2:Particle) -> float:
     :param p2: Second particle.
     :return: Gravitational force between the two particles.
     """
-    G = 5  # Gravitational constant
     distance = distance_euclidienne(p1, p2)
     
     if distance == 0:
