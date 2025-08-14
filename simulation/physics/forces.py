@@ -1,18 +1,19 @@
 from simulation.physics.particle import Particle
 from simulation.utils.positions import Position2D, Velocity2D
-from simulation.utils.constants import G
+from simulation.utils.constants import G, DEFAULT_SOFTENING
 
-def distance_euclidienne(p1:Particle, p2:Particle) -> float:
+def distance_euclidienne(p1:Particle, p2:Particle, softening: float = DEFAULT_SOFTENING) -> float:
     """
     Calculate the Euclidean distance between two particles.
 
     :param p1: First particle.
     :param p2: Second particle.
+    :param softening: Small value added to the squared distance to stabilize force.
     :return: Euclidean distance between the two particles.
     """
     dx = p1.position.x - p2.position.x
     dy = p1.position.y - p2.position.y
-    return (dx**2 + dy**2)**0.5
+    return (dx**2 + dy**2 + softening ** 2)**0.5
 
 def force_gravitationnelle(p1:Particle, p2:Particle) -> float:
     """
