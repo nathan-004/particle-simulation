@@ -12,8 +12,8 @@ def init_environment():
     
     # Initialize particle systems
     particles = [
-        Particle(mass=50.0, position=Position2D(500, 500), velocity=Velocity2D(0, 0), radius=5),
-        Particle(mass=75.0, position=Position2D(550, 550), velocity=Velocity2D(0, 0)),
+        Particle(mass=50.0, position=Position2D(500, 500), velocity=Velocity2D(2, 0), radius=10),
+        Particle(mass=100.0, position=Position2D(520, 500), velocity=Velocity2D(-1, 0), radius=12),
     ]
     
     return particles
@@ -32,12 +32,12 @@ def main():
                     particle.invert_velocity()  # Invert velocity on collision
                     other_particle.invert_velocity()  # Invert velocity of the other particle
                     continue
+
                 force = force_gravitationnelle(particle, other_particle)
                 distance = distance_euclidienne(particle, other_particle)
                 
                 # Calculate the direction of the force
-                dx = other_particle.position.x - particle.position.x
-                dy = other_particle.position.y - particle.position.y
+                dx, dy = other_particle.position - particle.position
                 
                 if distance > 0:
                     force_totale_x += (force * dx / distance)
@@ -46,11 +46,9 @@ def main():
         ax = force_totale_x / particle.mass
         ay = force_totale_y / particle.mass
 
-        particle.velocity.vx += ax
-        particle.velocity.vy += ay
+        particle.velocity += (ax, ay)
     
     for particle in particles:
-        particle.position.x += particle.velocity.vx
-        particle.position.y += particle.velocity.vy
+        particle.position += particle.velocity
 
     render_particles(particles)
