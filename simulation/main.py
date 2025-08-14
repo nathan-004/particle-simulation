@@ -12,8 +12,10 @@ def init_environment():
     
     # Initialize particle systems
     particles = [
-        Particle(mass=50.0, position=Position2D(500, 500), velocity=Velocity2D(2, 0), radius=10),
-        Particle(mass=100.0, position=Position2D(520, 500), velocity=Velocity2D(-1, 0), radius=12),
+        Particle(mass=1000.0, position=Position2D(520, 500), velocity=Velocity2D(0, 0), radius=15),  # "planète" centrale
+        Particle(mass=10.0, position=Position2D(570, 500), velocity=Velocity2D(0, 4), radius=8),     # "satellite" en orbite
+        Particle(mass=10.0, position=Position2D(570, 500), velocity=Velocity2D(0, 4), radius=8),
+        Particle(mass=10.0, position=Position2D(570, 500), velocity=Velocity2D(0, 4), radius=8),
     ]
     
     return particles
@@ -49,6 +51,6 @@ def main():
         particle.velocity += (ax, ay)
     
     for particle in particles:
-        particle.position += particle.velocity
+        particle.update_position()
 
     render_particles(particles)

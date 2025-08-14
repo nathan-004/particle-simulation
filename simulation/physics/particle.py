@@ -1,5 +1,5 @@
 from simulation.utils.positions import Position2D, Velocity2D
-from simulation.utils.constants import PARTICLE_RADIUS
+from simulation.utils.constants import PARTICLE_RADIUS, SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Particle:
     """Contains information about a particle in a simulation."""
@@ -23,3 +23,16 @@ class Particle:
         """
         self.velocity.vx = -self.velocity.vx
         self.velocity.vy = -self.velocity.vy
+
+    def update_position(self):
+        """
+        Update the particle's position based on its current velocity.
+        """
+        self.position += self.velocity
+
+        if self.position.x < 0 or self.position.x > SCREEN_WIDTH:
+            self.velocity.vx = -self.velocity.vx
+            self.position.x = abs(self.position.x) if self.position.x < 0 else SCREEN_WIDTH - (self.position.x - SCREEN_WIDTH)
+        if self.position.y < 0 or self.position.y > SCREEN_HEIGHT:
+            self.velocity.vy = -self.velocity.vy
+            self.position.y = abs(self.position.y) if self.position.y < 0 else SCREEN_HEIGHT - (self.position.y - SCREEN_HEIGHT)

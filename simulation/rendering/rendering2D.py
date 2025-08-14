@@ -1,11 +1,12 @@
 import pygame
 
 from simulation.physics.particle import Particle
-from simulation.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, DEFAULT_BACKGROUND_COLOR, DEFAULT_PARTICLE_COLOR
+from simulation.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, DEFAULT_BACKGROUND_COLOR, DEFAULT_PARTICLE_COLOR, FPS
 
 pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+clock = pygame.time.Clock()
 running = True
 
 def render_particles(particles:list[Particle]) -> None:
@@ -29,6 +30,7 @@ def main_game_loop():
                 func(*args, **kwargs)
 
                 pygame.display.flip()
+                clock.tick(FPS)
             pygame.quit()
         return wrapper
     return decorator
