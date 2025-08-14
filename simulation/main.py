@@ -1,6 +1,6 @@
 from simulation.physics.particle import *
 from simulation.rendering.rendering2D import *
-from simulation.physics.forces import distance_euclidienne, force_gravitationnelle, collision
+from simulation.physics.forces import distance_euclidienne, force_gravitationnelle, is_collision, resolve_collision
 
 def init_environment():
     """
@@ -12,10 +12,10 @@ def init_environment():
     
     # Initialize particle systems
     particles = [
-        Particle(mass=1000.0, position=Position2D(520, 500), velocity=Velocity2D(0, 0), radius=15),  # "planète" centrale
-        Particle(mass=10.0, position=Position2D(570, 500), velocity=Velocity2D(0, 4), radius=8),     # "satellite" en orbite
+        Particle(mass=1000.0, position=Position2D(520, 500), velocity=Velocity2D(0, 0), radius=15),
         Particle(mass=10.0, position=Position2D(570, 500), velocity=Velocity2D(0, 4), radius=8),
-        Particle(mass=10.0, position=Position2D(570, 500), velocity=Velocity2D(0, 4), radius=8),
+        Particle(mass=10.0, position=Position2D(570, 540), velocity=Velocity2D(-4, 0), radius=8),
+        Particle(mass=10.0, position=Position2D(480, 500), velocity=Velocity2D(0, -4), radius=8),
     ]
     
     return particles
@@ -24,17 +24,14 @@ particles = init_environment()
 
 @main_game_loop()
 def main():
-    for particle in particles:
+    for idx, particle in enumerate(particles):
         force_totale_x = 0
         force_totale_y = 0
 
         for other_particle in particles:
             if particle != other_particle:
-                if collision(particle, other_particle):
-                    particle.invert_velocity()  # Invert velocity on collision
-                    other_particle.invert_velocity()  # Invert velocity of the other particle
+                if is_collision(particle, other_particle):
                     continue
-
                 force = force_gravitationnelle(particle, other_particle)
                 distance = distance_euclidienne(particle, other_particle)
                 
@@ -50,6 +47,11 @@ def main():
 
         particle.velocity += (ax, ay)
     
+    for idx, particle in enumerate(particles):
+        for other_particle in particles[idx + 1:]:
+            if is_collision(particle, other_particle):
+                resolve_collision(particle, other_particle)
+
     for particle in particles:
         particle.update_position()
 
