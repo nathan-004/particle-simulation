@@ -1,0 +1,2 @@
+- [X] Réponse de collision réaliste
+- [ ] Gravité stabilisée avec softening
