@@ -12,7 +12,7 @@ def init_environment():
     
     # Initialize particle systems
     particles = [
-        Particle(mass=1000.0, position=Position2D(400, 300), velocity=Velocity2D(0, -1), radius=15),   # Terre
+        Particle(mass=1000.0, position=Position2D(400, 300), velocity=Velocity2D(0, -3), radius=15),   # Terre
         Particle(mass=10.0, position=Position2D(500, 300), velocity=Velocity2D(0, 6), radius=8),      # Lune
         Particle(mass=10.0, position=Position2D(300, 300), velocity=Velocity2D(0, -6), radius=8),      # Lune            
     ]
