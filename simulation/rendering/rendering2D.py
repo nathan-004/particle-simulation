@@ -15,7 +15,7 @@ def render_particles(particles:list[Particle]) -> None:
     """
     screen.fill((0, 0, 0))  # Clear the screen with black
     for particle in particles:
-        pygame.draw.circle(screen, (255, 255, 255), (int(particle.position.x), int(particle.position.y)), 5)
+        pygame.draw.circle(screen, (255, 255, 255), (int(particle.position.x), int(particle.position.y)), particle.radius)
 
 def main_game_loop():
     def decorator(func):

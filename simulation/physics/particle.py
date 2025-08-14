@@ -14,3 +14,11 @@ class Particle:
         self.position = position
         self.velocity = velocity
         self.radius = radius
+
+    def invert_velocity(self):
+        """
+        Invert the particle's velocity.
+        This is used to simulate a bounce or collision response.
+        """
+        self.velocity.vx = -self.velocity.vx
+        self.velocity.vy = -self.velocity.vy

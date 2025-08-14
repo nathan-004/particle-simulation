@@ -21,7 +21,7 @@ def force_gravitationnelle(p1:Particle, p2:Particle) -> float:
     :param p2: Second particle.
     :return: Gravitational force between the two particles.
     """
-    G = 6.67430e-11  # Gravitational constant
+    G = 5  # Gravitational constant
     distance = distance_euclidienne(p1, p2)
     
     if distance == 0:
@@ -29,3 +29,14 @@ def force_gravitationnelle(p1:Particle, p2:Particle) -> float:
     
     force = G * (p1.mass * p2.mass) / (distance**2)
     return force
+
+def collision(p1:Particle, p2:Particle) -> bool:
+    """
+    Check if two particles collide based on their positions and radii.
+
+    :param p1: First particle.
+    :param p2: Second particle.
+    :return: True if particles collide, False otherwise.
+    """
+    distance = distance_euclidienne(p1, p2)
+    return distance <= (p1.radius + p2.radius)

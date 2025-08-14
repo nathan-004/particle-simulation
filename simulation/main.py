@@ -1,5 +1,6 @@
 from simulation.physics.particle import *
 from simulation.rendering.rendering2D import *
+from simulation.physics.forces import distance_euclidienne, force_gravitationnelle, collision
 
 def init_environment():
     """
@@ -11,8 +12,8 @@ def init_environment():
     
     # Initialize particle systems
     particles = [
-        Particle(mass=1.0, position=Position2D(0, 0), velocity=Velocity2D(1, 0)),
-        Particle(mass=2.0, position=Position2D(1, 1), velocity=Velocity2D(0, 1)),
+        Particle(mass=50.0, position=Position2D(500, 500), velocity=Velocity2D(0, 0), radius=5),
+        Particle(mass=75.0, position=Position2D(550, 550), velocity=Velocity2D(0, 0)),
     ]
     
     return particles
@@ -21,4 +22,35 @@ particles = init_environment()
 
 @main_game_loop()
 def main():
+    for particle in particles:
+        force_totale_x = 0
+        force_totale_y = 0
+
+        for other_particle in particles:
+            if particle != other_particle:
+                if collision(particle, other_particle):
+                    particle.invert_velocity()  # Invert velocity on collision
+                    other_particle.invert_velocity()  # Invert velocity of the other particle
+                    continue
+                force = force_gravitationnelle(particle, other_particle)
+                distance = distance_euclidienne(particle, other_particle)
+                
+                # Calculate the direction of the force
+                dx = other_particle.position.x - particle.position.x
+                dy = other_particle.position.y - particle.position.y
+                
+                if distance > 0:
+                    force_totale_x += (force * dx / distance)
+                    force_totale_y += (force * dy / distance)
+        
+        ax = force_totale_x / particle.mass
+        ay = force_totale_y / particle.mass
+
+        particle.velocity.vx += ax
+        particle.velocity.vy += ay
+    
+    for particle in particles:
+        particle.position.x += particle.velocity.vx
+        particle.position.y += particle.velocity.vy
+
     render_particles(particles)
