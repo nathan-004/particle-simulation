@@ -1,5 +1,19 @@
 from simulation.utils.positions import Position2D, Velocity2D
-from simulation.utils.constants import PARTICLE_RADIUS, SCREEN_WIDTH, SCREEN_HEIGHT
+from simulation.utils.constants import PARTICLE_RADIUS, SCREEN_WIDTH, SCREEN_HEIGHT, MAX_PARTICLE_TRAIL_LENGTH
+
+class MaxSizeList(list):
+    """
+    A list that maintains a maximum size.
+    When the size exceeds the limit, the oldest elements are removed.
+    """
+    def __init__(self, max_size):
+        super().__init__()
+        self.max_size = max_size
+
+    def append(self, item):
+        if len(self) >= self.max_size:
+            self.pop(0)  # Remove the oldest item
+        super().append(item)
 
 class Particle:
     """Contains information about a particle in a simulation."""
@@ -15,6 +29,7 @@ class Particle:
         self.position = position
         self.velocity = velocity
         self.radius = radius
+        self.trail = MaxSizeList(MAX_PARTICLE_TRAIL_LENGTH) # To store the trail of the particle
 
     def invert_velocity(self):
         """

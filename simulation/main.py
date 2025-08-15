@@ -26,7 +26,7 @@ particles = init_environment()
 
 @main_game_loop()
 def main():
-    dt = 1 / FPS  # Time step for the simulation
+    dt = 1  # Time step for the simulation
     for idx, particle in enumerate(particles):
         force_totale_x = 0
         force_totale_y = 0
