@@ -24,11 +24,11 @@ class Particle:
         self.velocity.vx = -self.velocity.vx
         self.velocity.vy = -self.velocity.vy
 
-    def update_position(self):
+    def update_position(self, dt:float) -> None:
         """
         Update the particle's position based on its current velocity.
         """
-        self.position += self.velocity
+        self.position += (self.velocity.vx * dt, self.velocity.vy * dt)
 
         if self.touch_ground('x'):
             self.velocity.vx = -self.velocity.vx

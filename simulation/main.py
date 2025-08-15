@@ -1,6 +1,7 @@
 from simulation.physics.particle import *
 from simulation.rendering.rendering2D import *
 from simulation.physics.forces import distance_euclidienne, force_gravitationnelle, is_collision, resolve_collision
+from simulation.utils.constants import FPS
 
 def init_environment():
     """
@@ -12,9 +13,11 @@ def init_environment():
     
     # Initialize particle systems
     particles = [
-        Particle(mass=1000.0, position=Position2D(400, 300), velocity=Velocity2D(0, -3), radius=15),   # Terre
-        Particle(mass=10.0, position=Position2D(500, 300), velocity=Velocity2D(0, 6), radius=8),      # Lune
-        Particle(mass=10.0, position=Position2D(300, 300), velocity=Velocity2D(0, -6), radius=8),      # Lune            
+        Particle(mass=1000.0, position=Position2D(400, 300), velocity=Velocity2D(0, 0), radius=15),   # Terre
+        Particle(mass=10.0, position=Position2D(500, 300), velocity=Velocity2D(0, 6), radius=8),      # Lune 1
+        Particle(mass=10.0, position=Position2D(400, 400), velocity=Velocity2D(6, 0), radius=8),      # Lune 2
+        Particle(mass=10.0, position=Position2D(300, 300), velocity=Velocity2D(0, -6), radius=8),     # Lune 3
+        Particle(mass=10.0, position=Position2D(400, 200), velocity=Velocity2D(-6, 0), radius=8),     # Lune 4
     ]
     
     return particles
@@ -23,6 +26,7 @@ particles = init_environment()
 
 @main_game_loop()
 def main():
+    dt = 1 / FPS  # Time step for the simulation
     for idx, particle in enumerate(particles):
         force_totale_x = 0
         force_totale_y = 0
@@ -44,7 +48,7 @@ def main():
         ax = force_totale_x / particle.mass
         ay = force_totale_y / particle.mass
 
-        particle.velocity += (ax, ay)
+        particle.velocity += (ax * dt, ay * dt)
     
     for idx, particle in enumerate(particles):
         for other_particle in particles[idx + 1:]:
@@ -52,6 +56,6 @@ def main():
                 resolve_collision(particle, other_particle)
 
     for particle in particles:
-        particle.update_position()
+        particle.update_position(dt)
 
     render_particles(particles)
