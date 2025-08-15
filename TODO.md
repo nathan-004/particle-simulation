@@ -1,2 +1,3 @@
 - [X] Réponse de collision réaliste
 - [X] Gravité stabilisée avec softening
+- [ ] Ajouter trajectoire
