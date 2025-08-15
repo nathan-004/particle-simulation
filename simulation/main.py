@@ -1,7 +1,39 @@
+from random import randint
+from typing import Optional
+
 from simulation.physics.particle import *
 from simulation.rendering.rendering2D import *
 from simulation.physics.forces import distance_euclidienne, force_gravitationnelle, is_collision, resolve_collision
-from simulation.utils.constants import FPS
+from simulation.utils.constants import FPS, SCREEN_WIDTH, SCREEN_HEIGHT
+
+def init_particle(mass, position:Optional[tuple], velocity:Optional[tuple], radius:float, n:int):
+    """
+    Initialize a particle with its properties.
+
+    :param mass: Mass of the particle.
+    :param position: Initial position of the particle.
+    :param velocity: Initial velocity of the particle.
+    :param radius: Radius of the particle.
+    :param n: Number of particles to initialize.
+    :return: List of initialized particles.
+    """
+    particles = []
+    for _ in range(n):
+        if position is None:
+            x = randint(0, SCREEN_WIDTH)
+            y = randint(0, SCREEN_HEIGHT)
+            position_ = (x, y)
+        else:
+            position_ = position
+        if velocity is None:
+            vx = randint(-6, 6)
+            vy = randint(-6, 6)
+            velocity_ = (vx, vy)
+        else:
+            velocity_ = velocity
+        particle = Particle(mass=mass, position=Position2D(*position_), velocity=Velocity2D(*velocity_), radius=radius)
+        particles.append(particle)
+    return particles
 
 def init_environment():
     """
@@ -13,11 +45,8 @@ def init_environment():
     
     # Initialize particle systems
     particles = [
-        Particle(mass=1000.0, position=Position2D(400, 300), velocity=Velocity2D(0, 0), radius=15),   # Terre
-        Particle(mass=10.0, position=Position2D(500, 300), velocity=Velocity2D(0, 6), radius=8),      # Lune 1
-        Particle(mass=10.0, position=Position2D(400, 400), velocity=Velocity2D(6, 0), radius=8),      # Lune 2
-        Particle(mass=10.0, position=Position2D(300, 300), velocity=Velocity2D(0, -6), radius=8),     # Lune 3
-        Particle(mass=10.0, position=Position2D(400, 200), velocity=Velocity2D(-6, 0), radius=8),     # Lune 4
+        *init_particle(mass=15.0, position=None, velocity=None, radius=8, n=5),
+        Particle(mass=1000.0, position=Position2D(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2), velocity=Velocity2D(0, 0), radius=15)
     ]
     
     return particles
