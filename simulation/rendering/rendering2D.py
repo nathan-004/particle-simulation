@@ -17,9 +17,9 @@ def render_particles(particles:list[Particle]) -> None:
     """
     screen.fill(DEFAULT_BACKGROUND_COLOR)  # Clear the screen with black
     for particle in particles:
-        pygame.draw.circle(screen, DEFAULT_PARTICLE_COLOR, (int(particle.position.x), int(particle.position.y)), particle.radius)
+        pygame.draw.circle(screen, particle.color, (int(particle.position.x), int(particle.position.y)), particle.radius)
         if len(particle.trail) > 1:
-            pygame.draw.lines(screen, DEFAULT_PARTICLE_COLOR, False, particle.trail, 1)
+            pygame.draw.lines(screen, particle.color, False, particle.trail, 1)
         particle.trail.append(pygame.Vector2(particle.position.x, particle.position.y))
 
 def main_game_loop():

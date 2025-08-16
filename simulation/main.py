@@ -42,12 +42,19 @@ def init_environment():
     This function sets up the necessary components for the simulation,
     including loading configurations and initializing particle systems.
     """
-    
     # Initialize particle systems
     particles = [
-        *init_particle(mass=15.0, position=None, velocity=None, radius=8, n=5),
-        Particle(mass=1000.0, position=Position2D(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2), velocity=Velocity2D(0, 0), radius=15)
+        Particle(mass=1000.0, position=Position2D(400, 300), velocity=Velocity2D(0, 0), radius=15, color=(0, 100, 255)),      # Terre (bleu)
+        Particle(mass=10.0, position=Position2D(500, 300), velocity=Velocity2D(0, 6), radius=8, color=(220, 220, 220)),      # Lune 1 (blanc)
+        Particle(mass=10.0, position=Position2D(400, 400), velocity=Velocity2D(6, 0), radius=8, color=(255, 200, 0)),        # Lune 2 (jaune)
+        Particle(mass=10.0, position=Position2D(300, 300), velocity=Velocity2D(0, -6), radius=8, color=(255, 80, 80)),       # Lune 3 (rouge)
+        Particle(mass=10.0, position=Position2D(400, 200), velocity=Velocity2D(-6, 0), radius=8, color=(80, 255, 80)),     # Lune 4 (vert)
     ]
+
+    # particles = [
+    #     *init_particle(mass=100.0, position=None, velocity=None, radius=50, n=2),
+    #     Particle(mass=5000.0, position=Position2D(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2), velocity=Velocity2D(0, 0), radius=15)
+    # ]
     
     return particles
 

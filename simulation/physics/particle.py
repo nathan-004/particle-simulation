@@ -1,5 +1,5 @@
 from simulation.utils.positions import Position2D, Velocity2D
-from simulation.utils.constants import PARTICLE_RADIUS, SCREEN_WIDTH, SCREEN_HEIGHT, MAX_PARTICLE_TRAIL_LENGTH
+from simulation.utils.constants import PARTICLE_RADIUS, SCREEN_WIDTH, SCREEN_HEIGHT, MAX_PARTICLE_TRAIL_LENGTH, DEFAULT_PARTICLE_COLOR
 
 class MaxSizeList(list):
     """
@@ -17,7 +17,7 @@ class MaxSizeList(list):
 
 class Particle:
     """Contains information about a particle in a simulation."""
-    def __init__(self, mass, position:Position2D, velocity:Velocity2D, radius:int = PARTICLE_RADIUS):
+    def __init__(self, mass, position:Position2D, velocity:Velocity2D, radius:int = PARTICLE_RADIUS, color=DEFAULT_PARTICLE_COLOR):
         """
         Initialize a particle with its properties.
 
@@ -30,6 +30,7 @@ class Particle:
         self.velocity = velocity
         self.radius = radius
         self.trail = MaxSizeList(MAX_PARTICLE_TRAIL_LENGTH) # To store the trail of the particle
+        self.color = color
 
     def invert_velocity(self):
         """
