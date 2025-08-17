@@ -34,3 +34,19 @@ class Velocity2D:
             self.vx += other[0]
             self.vy += other[1]
         return self
+    
+    def __sub__(self, other) -> 'Velocity2D':
+        if isinstance(other, Velocity2D):
+            return Velocity2D(self.vx - other.vx, self.vy - other.vy)
+        elif type(other) in (int, float):
+            return Velocity2D(self.vx - other, self.vy - other)
+        else:
+            return NotImplemented
+        
+    def length(self) -> float:
+        """
+        Calculate the length of the velocity vector.
+        
+        :return: Length of the velocity vector.
+        """
+        return (self.vx**2 + self.vy**2) ** 0.5

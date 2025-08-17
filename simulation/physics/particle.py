@@ -1,5 +1,5 @@
 from simulation.utils.positions import Position2D, Velocity2D
-from simulation.utils.constants import PARTICLE_RADIUS, SCREEN_WIDTH, SCREEN_HEIGHT, MAX_PARTICLE_TRAIL_LENGTH, DEFAULT_PARTICLE_COLOR
+from simulation.utils.constants import PARTICLE_RADIUS, SCREEN_WIDTH, SCREEN_HEIGHT, MAX_PARTICLE_TRAIL_LENGTH, DEFAULT_PARTICLE_COLOR, FragParams
 
 class MaxSizeList(list):
     """
@@ -11,7 +11,7 @@ class MaxSizeList(list):
         self.max_size = max_size
 
     def append(self, item):
-        if len(self) >= self.max_size:
+        if len(self) >= self.max_size > 0:
             self.pop(0)  # Remove the oldest item
         super().append(item)
 
@@ -32,6 +32,12 @@ class Particle:
         self.trail = MaxSizeList(MAX_PARTICLE_TRAIL_LENGTH) # To store the trail of the particle
         self.color = color
 
+        self.collision = not radius <= FragParams.min_particle_radius  # Check if the particle can collide based on its radius
+        self.lifetime = None
+        if not self.collision:
+            self.trail = MaxSizeList(0)  # No trail for particles that cannot collide
+            self.lifetime = FragParams.fragment_lifetime  # Set lifetime for non-colliding particles
+
     def invert_velocity(self):
         """
         Invert the particle's velocity.
@@ -44,6 +50,8 @@ class Particle:
         """
         Update the particle's position based on its current velocity.
         """
+        if self.lifetime is not None:
+            self.lifetime -= 1
         self.position += (self.velocity.vx * dt, self.velocity.vy * dt)
 
         if self.touch_ground('x'):

@@ -8,6 +8,7 @@ from simulation.physics.forces import (
     force_gravitationnelle,
     is_collision,
     resolve_collision,
+    resolve_colision_fragment
 )
 from simulation.utils.constants import FPS, SCREEN_WIDTH, SCREEN_HEIGHT
 
@@ -109,7 +110,11 @@ particles = init_environment()
 @main_game_loop()
 def main():
     dt = 1  # Time step for the simulation
-    for idx, particle in enumerate(particles):
+    for idx, particle in enumerate(particles.copy()):
+        if particle.lifetime is not None and particle.lifetime <= 0:
+            print(f"Particle {idx} has reached its lifetime and will be removed.")
+            particles.remove(particle)
+            continue
         force_totale_x = 0
         force_totale_y = 0
 
@@ -132,11 +137,17 @@ def main():
 
         particle.velocity += (ax * dt, ay * dt)
 
-    for idx, particle in enumerate(particles):
-        for other_particle in particles[idx + 1 :]:
+    for idx, particle in enumerate(particles.copy()):
+        for other_particle in particles.copy()[idx + 1 :]:
+            if not all([particle.collision, other_particle.collision]):
+                continue
+            print(f"Checking collision between particle {idx} and {particles.index(other_particle)}")
             if is_collision(particle, other_particle):
-                resolve_collision(particle, other_particle)
-
+                new_particles = resolve_colision_fragment(particle, other_particle)
+                if new_particles is None:
+                    continue
+                particles.extend(new_particles)
+    
     for particle in particles:
         particle.update_position(dt)
 
