@@ -35,7 +35,7 @@ class Particle:
         self.collision = not radius <= FragParams.min_particle_radius  # Check if the particle can collide based on its radius
         self.lifetime = None
         if not self.collision:
-            self.trail = MaxSizeList(0)  # No trail for particles that cannot collide
+            self.trail = MaxSizeList(1)  # No trail for particles that cannot collide
             self.lifetime = FragParams.fragment_lifetime  # Set lifetime for non-colliding particles
 
     def invert_velocity(self):
@@ -74,3 +74,14 @@ class Particle:
             return self.position.x <= 0 or self.position.x >= SCREEN_WIDTH - self.radius
         else:
             raise ValueError("axis must be 'x' or 'y'")
+
+class ParticleFragment(Particle):
+    """
+    Represents a fragment of a particle after a collision.
+    It inherits from Particle and can have its own properties.
+    """
+    def __init__(self, mass, position:Position2D, velocity:Velocity2D, radius:int = PARTICLE_RADIUS, color=DEFAULT_PARTICLE_COLOR):
+        super().__init__(mass, position, velocity, radius, color)
+        self.lifetime = FragParams.fragment_lifetime  # Set lifetime for fragments
+        self.trail = MaxSizeList(1)  # No trail for fragments
+        self.collision = False

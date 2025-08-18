@@ -13,7 +13,7 @@ DEFAULT_SOFTENING = 0  # Softening factor for distance calculations
 PARTICLE_RADIUS = 5  # Default radius for particles
 
 # Collision parameters
-Q_star = 10**2 # Resistance factor for collisions (J/kg)
+Q_star = 10**2 / 2 # Resistance factor for collisions (J/kg)
 c_N = 3.0
 beta = 0.8
 N_min = 2  # Minimum number of fragments after a collision

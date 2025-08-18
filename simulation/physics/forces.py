@@ -2,7 +2,7 @@ import math
 import numpy as np
 from typing import NamedTuple
 
-from simulation.physics.particle import Particle
+from simulation.physics.particle import Particle, ParticleFragment
 from simulation.utils.positions import Position2D, Velocity2D
 from simulation.utils.constants import G, DEFAULT_SOFTENING, FragParams
 
@@ -136,7 +136,7 @@ def resolve_colision_fragment(p1: Particle, p2: Particle) -> None:
 
     for i, frag in enumerate(fragments):
         print(f"Creating fragment {i+1}/{N} with mass {frag.mass} and radius {frag.radius}")
-        new_particle = Particle(
+        new_particle = ParticleFragment(
             mass=frag.mass,
             position=Position2D(victim.position.x, victim.position.y),
             velocity=Velocity2D(vx[i], vy[i]),
