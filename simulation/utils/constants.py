@@ -24,7 +24,7 @@ rho = 0.5 # Density of the particles
 k_ej = 0.1  # Ejection velocity factor
 max_fragments = 30  # Maximum number of fragments to generate
 min_particle_radius = 1  # Minimum radius for fragments
-fragment_lifetime = FPS * 1
+fragment_lifetime = FPS * 3
 
 @dataclass(frozen=True)
 class FragParams:

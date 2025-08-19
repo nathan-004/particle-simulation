@@ -109,7 +109,7 @@ def resolve_colision_fragment(p1: Particle, p2: Particle) -> None:
         return
     
     # Explosive collision resolution
-    rate_break = min(1, FragParams.c_N * (energy / E_seuil - 1) ** FragParams.beta)
+    rate_break = min(0.09, FragParams.c_N * (energy / E_seuil - 1) ** FragParams.beta)
     M_frag = rate_break * victim.mass
     M_surv = victim.mass - M_frag
     print(f"Fragment mass: {M_frag}, Surviving mass: {M_surv}")
@@ -145,6 +145,13 @@ def resolve_colision_fragment(p1: Particle, p2: Particle) -> None:
         )
         particles.append(new_particle)
 
+    victim.radius = victim.radius * M_surv / victim.mass  # Update the radius based on the new mass
+    victim.mass = M_surv  # Update the mass of the surviving particle
+
+    if victim.radius < FragParams.min_particle_radius:
+        victim.lifetime = 0  # If the radius is too small, set lifetime to 0
+
+    print(f"Surviving particle updated: {victim.mass} kg, radius {victim.radius}")
     resolve_collision(victim, impactor)  # Resolve collision for the original particles
 
     print(f"Collision explosive between particles {p1} and {p2}, generating {len(particles)} fragments.")
