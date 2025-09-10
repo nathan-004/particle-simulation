@@ -28,22 +28,16 @@ def render_particles(particles:list[Particle]) -> None:
 def main_game_loop():
     def decorator(func):
         def wrapper(*args, **kwargs):
-            last_time = time.time()
-            current_time = time.time()
-            current_fps = 0
             while running:
-                current_time = time.time()
-                current_fps = 60 // (current_time - last_time)
-                fps_text_surface = fps_text.render(f"FPS : {current_fps}", False, (0, 0, 0))
-                screen.blit(fps_text_surface, (0,0))
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         return
 
                 func(*args, **kwargs)
 
+                fps_text_surface = fps_text.render(f"FPS : {clock.get_fps()}", False, (255, 255, 255))
+                screen.blit(fps_text_surface, (0,0))
                 pygame.display.flip()
-                last_time = time.time()
                 clock.tick(FPS)
             pygame.quit()
         return wrapper
