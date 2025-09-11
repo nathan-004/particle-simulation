@@ -8,7 +8,8 @@ from simulation.physics.forces import (
     force_gravitationnelle,
     is_collision,
     resolve_collision,
-    resolve_colision_fragment
+    resolve_colision_fragment,
+    collision
 )
 from simulation.utils.constants import FPS, SCREEN_WIDTH, SCREEN_HEIGHT
 
@@ -96,10 +97,10 @@ def init_environment():
         ),  # Lune 4 (vert)
     ]
 
-    # particles = [
-    #     *init_particle(mass=100.0, position=None, velocity=None, radius=50, n=2),
-    #     Particle(mass=5000.0, position=Position2D(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2), velocity=Velocity2D(0, 0), radius=15)
-    # ]
+    particles = [
+        *init_particle(mass=400.0, position=None, velocity=None, radius=10, n=3),
+        #Particle(mass=5000.0, position=Position2D(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2), velocity=Velocity2D(0, 0), radius=15)
+    ]
 
     return particles
 
@@ -108,8 +109,13 @@ particles = init_environment()
 
 
 @main_game_loop()
-def main():
+def main(add_object:Optional[tuple]=None):
+    """Objet à ajouter sous forme (mass, position, velocity, radius, color, lifetime)"""
     dt = 1  # Time step for the simulation
+
+    if not add_object is None:
+        particles.append(Particle(*add_object))
+
     for idx, particle in enumerate(particles.copy()):
         if particle.lifetime is not None and particle.lifetime <= 0:
             print(f"Particle {idx} has reached its lifetime and will be removed.")
@@ -143,11 +149,11 @@ def main():
                 continue
             print(f"Checking collision between particle {idx} and {particles.index(other_particle)}")
             if is_collision(particle, other_particle):
-                new_particles = resolve_colision_fragment(particle, other_particle)
+                new_particles = collision(particle, other_particle)
                 if new_particles is None:
                     continue
                 particles.extend(new_particles)
-    
+
     for particle in particles:
         particle.update_position(dt)
 

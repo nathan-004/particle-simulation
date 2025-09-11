@@ -4,7 +4,7 @@ from typing import NamedTuple
 
 from simulation.physics.particle import Particle, ParticleFragment
 from simulation.utils.positions import Position2D, Velocity2D
-from simulation.utils.constants import G, DEFAULT_SOFTENING, FragParams
+from simulation.utils.constants import G, DEFAULT_SOFTENING, FragParams, SCREEN_HEIGHT
 
 
 class ParticleData(NamedTuple):
@@ -43,7 +43,6 @@ def force_gravitationnelle(p1: Particle, p2: Particle) -> float:
     force = G * (p1.mass * p2.mass) / (distance**2)
     return force
 
-
 def is_collision(p1: Particle, p2: Particle) -> bool:
     """
     Check if two particles collide based on their positions and radii.
@@ -54,7 +53,6 @@ def is_collision(p1: Particle, p2: Particle) -> bool:
     """
     distance = distance_euclidienne(p1, p2)
     return distance <= (p1.radius + p2.radius)
-
 
 def resolve_collision(p1: Particle, p2: Particle) -> None:
     """
@@ -183,3 +181,6 @@ def generate_fragment(N:int, M_frag, s:float = FragParams.s, min_mass:float = Fr
         )
     
     return fragments
+
+def collision(p1: Particle, p2: Particle, mode = resolve_collision):
+    return mode(p1, p2)

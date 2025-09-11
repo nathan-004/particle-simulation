@@ -3,6 +3,7 @@ import time
 
 from simulation.physics.particle import Particle
 from simulation.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, DEFAULT_BACKGROUND_COLOR, DEFAULT_PARTICLE_COLOR, FPS
+from simulation.utils.positions import Position2D, Velocity2D
 
 pygame.init()
 pygame.font.init()
@@ -29,11 +30,14 @@ def main_game_loop():
     def decorator(func):
         def wrapper(*args, **kwargs):
             while running:
+                new_object = None
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         return
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        new_object = (1000, Position2D(event.pos[0], event.pos[1]) , Velocity2D(0, 0), 1, "black", 1)
 
-                func(*args, **kwargs)
+                func(*args, **kwargs, add_object = new_object)
 
                 fps_text_surface = fps_text.render(f"FPS : {clock.get_fps()}", False, (255, 255, 255))
                 screen.blit(fps_text_surface, (0,0))

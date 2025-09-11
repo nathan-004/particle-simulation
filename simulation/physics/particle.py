@@ -17,7 +17,7 @@ class MaxSizeList(list):
 
 class Particle:
     """Contains information about a particle in a simulation."""
-    def __init__(self, mass, position:Position2D, velocity:Velocity2D, radius:int = PARTICLE_RADIUS, color=DEFAULT_PARTICLE_COLOR):
+    def __init__(self, mass, position:Position2D, velocity:Velocity2D, radius:int = PARTICLE_RADIUS, color=DEFAULT_PARTICLE_COLOR, lifetime = None):
         """
         Initialize a particle with its properties.
 
@@ -37,6 +37,8 @@ class Particle:
         if not self.collision:
             self.trail = MaxSizeList(1)  # No trail for particles that cannot collide
             self.lifetime = FragParams.fragment_lifetime  # Set lifetime for non-colliding particles
+        if lifetime is not None:
+            self.lifetime = lifetime
 
     def invert_velocity(self):
         """
